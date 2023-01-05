@@ -1,0 +1,22 @@
+{
+  "name": "checking-yandex-osm-maps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sarylov/checking-yandex-osm-maps.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sarylov/checking-yandex-osm-maps/issues"
+  },
+  "homepage": "https://github.com/Sarylov/checking-yandex-osm-maps#readme",
+  "dependencies": {
+    "axios": "^1.2.2"
+  }
+}
