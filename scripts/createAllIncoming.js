@@ -1,5 +1,6 @@
 const { default: axios } = require("axios");
 const { nominatimUrl } = require("../keys");
+const fs = require("fs");
 
 const deleteBanWord = (address) => {
   const banWord = "подъезд";
@@ -23,31 +24,40 @@ const checkingForFinding = (extractedData, address) => {
   let res = false;
 
   extractedData.forEach((extracted) => {
-    if (extracted.display_name.indexOf(lastObject) !== -1) res = true;
+    console.log(extracted.display_name+"\n"+lastObject);
+    const extractedAddressArr = extracted.display_name
+      .replace(/,/g, "")
+      .trim()
+      .split(" ");
+    if (extractedAddressArr.indexOf(lastObject) !== -1) res = true;
   });
   return res;
 };
 
-// interface IDataObj{
-//   address:string,
-//   longitude:number,
-//   latitude:number,
-//   title?:string
-//   name?: string,
-//   phone?: string
-// }
+const createAllIncoming = (data, nameResultFile) => {
+  data.forEach((element, index) => {
+    setTimeout(async () => {
+      const address = deleteBanWord(element.address);
+      const extracted = await fetchData(address);
+      const isIncoming = checkingForFinding(extracted.data, address);
+      const extractedAddress =
+        extracted.data.length > 0 ? extracted.data[0].display_name : "";
+      const dataLength = data.length;
 
-// interface IData{
-//   obj:IDataObj[]
-// }
+      console.log(`проверенно: ${index + 1} из ${dataLength} ${isIncoming}`);
 
-const createAllIncomingClient = (data) => {
-  data.forEach(async (element) => {
-    const address = deleteBanWord(element.address);
-    const extracted = await fetchData(address);
-    const isIncoming = checkingForFinding(extracted.data, address);
-    console.log(isIncoming);
+      element.OSMGeocodeAddress = extractedAddress;
+      if (isIncoming)
+        fs.appendFileSync(
+          "./results/" + nameResultFile + ".json",
+          `${JSON.stringify(element)}${dataLength !== index + 1 && ","}`,
+          function (error) {
+            if (error) throw error; // если возникла ошибка
+            console.log("Произошла ошибка. Запись файла завершена.");
+          }
+        );
+    }, 500 * index);
   });
 };
 
-module.exports = { createAllIncomingClient };
+module.exports = { createAllIncoming };

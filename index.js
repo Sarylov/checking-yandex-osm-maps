@@ -1,10 +1,5 @@
-const { default: axios } = require("axios");
-const { createAllIncomingClient } = require("./scripts/createAllIncoming");
-const clientJSON = require("./data/clients.json");
-const client = JSON.parse(clientJSON);
+const { createAllIncoming } = require("./scripts/createAllIncoming");
+const partners = require("./data/partners.json");
 
-// убрать подъезд
-// убрать все кварталы
-// убрать все проезды
+createAllIncoming(partners, "resultParners");
 
-createAllIncomingClient(client);
