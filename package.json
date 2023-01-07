@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index"
+    "start": "node index",
+    "client": "node ./scripts/getClientsAddressesFromOSM",
+    "partners": "node ./scripts/getParnersAddressesFromOSM",
+    "pair": "node ./scripts/getRandomPair",
+    "osrm": "node ./scripts/getOSRMDistance"
   },
   "repository": {
     "type": "git",
